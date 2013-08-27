@@ -147,3 +147,24 @@ class Fragment(object):
             self.memcache.set(self.body_prefix+url, result, timeout+self.lock_timeout)
             self.memcache.set(self.fresh_prefix+url, 1, timeout)
             self.memcache.delete(self.lock_prefix+url)
+
+    def _create_nginx_config(self, file_name, backend_host=None, backend_port=None,
+                             frontend_host=None, frontend_port=None, memcached_host=None,
+                             memcached_port=None, body_prefix=None):
+        """Creates nginx config file"""
+        import os.path
+        frontend = flask.current_app.config.get('SERVER_NAME')
+        frontend = (frontend or 'localhost') + ':80'
+        frontend_host = frontend_host or frontend.split(':')[0]
+        frontend_port = frontend_port or int(frontend.split(':')[1])
+        source_name = os.path.join(os.path.dirname(__file__), 'preserve', 'nginx.conf')
+        with open(source_name) as source:
+            conf = source.read() % dict(
+                frontend_host = frontend_host, frontend_port = frontend_port,
+                backend_host = backend_host or '127.0.0.1',
+                backend_port = backend_port or 5000,
+                memcached_host = memcached_host or '127.0.0.1',
+                memcached_port = memcached_port or 11211,
+                body_prefix = body_prefix or self.body_prefix)
+            with open(file_name, 'w') as file:
+                file.write(conf)
