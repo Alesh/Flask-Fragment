@@ -11,5 +11,6 @@ setup(
     packages = ['flask_fragment'],
     install_requires = [
         'Flask',
+        # 'python-binary-memcached' Need lastest pip install git+https://github.com/jaysonsantos/python-binary-memcached.git
     ],
 )
