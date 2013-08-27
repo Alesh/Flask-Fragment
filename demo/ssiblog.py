@@ -132,14 +132,17 @@ class DefaultConfig(object):
 
 
 ### Console command ###
+import sys
 import os.path
+PY2 = sys.version_info[0] == 2
 
 @manager.command
 def debug():
     """Runs application within debug environment."""
-    from flask_debugtoolbar import DebugToolbarExtension
     app.config['DEBUG'] = True
-    DebugToolbarExtension(app)
+    if PY2:
+        from flask_debugtoolbar import DebugToolbarExtension
+        DebugToolbarExtension(app)
     app.run(debug=True)
 
 @manager.command

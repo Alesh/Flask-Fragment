@@ -138,15 +138,12 @@ class Fragment(object):
         return bool(self.memcache.get(self.fresh_prefix+url) or False)
     
     def _cache_reset(self, url):
-        print '_cache_reset', url
         self.memcache.delete(self.fresh_prefix+url)
     
     def _cache_prepare(self, url, timeout, deferred_view):
-        print '_cache_prepare', url, timeout
         successed_lock = self.memcache.add(self.lock_prefix+url, 1, self.lock_timeout)
         if successed_lock:
             result = Compressor.unless_prefix+(deferred_view()).encode('utf-8')
             self.memcache.set(self.body_prefix+url, result, timeout+self.lock_timeout)
             self.memcache.set(self.fresh_prefix+url, 1, timeout)
             self.memcache.delete(self.lock_prefix+url)
-            print '_cache_prepare', 'OK'
