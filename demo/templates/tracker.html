@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% from 'macros.html' import render_pagination %}
+{% block content %}
+    <section class="post-list">
+        <h2>List of last comments</h2>
+        {{ render_pagination(pagination, 'tracker') }}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th class="author">Author</th>
+                <th class="created-at">Created At</th>
+            </tr>
+            {% for comment in comments %}
+            <tr>
+                <td><a href="{{ url_for('post_show', id=comment.post.id) }}">re: {{ comment.post.title }}</a></td>
+                <td>{{ comment.author.username }}</td>
+                <td>{{ comment.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {{ render_pagination(pagination, 'tracker') }}
+    </section>
+{% endblock %}

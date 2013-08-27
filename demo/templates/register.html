@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<section class="register">
+    <h2>Please register</h2>
+    <form action="{{ url_for('register') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ render_field(form.username) }}
+        {{ render_field(form.password) }}
+        {{ render_field(form.repassword) }}
+        <input type="submit" value="Register">
+    </form>
+</section>
+{% endblock %}

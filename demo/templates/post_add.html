@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+{% from 'macros.html' import render_field %}
+
+{% block content %}
+<section class="post-show">
+    <h2>Add new post here</h2>
+    <form action="{{ url_for('post_add') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ render_field(form.title) }}
+        {{ render_field(form.body) }}
+        <div class="row"><input type="submit" value="Save"></div>
+    </form>
+</section>
+{% endblock %}

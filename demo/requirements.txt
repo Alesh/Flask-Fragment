@@ -1,0 +1,6 @@
+flask_script
+flask_fragment
+flask_sqlalchemy
+flask_login
+flask_wtf
+flask_debugtoolbar

@@ -1,0 +1,31 @@
+{% macro render_field(field, wrapped=False) %}
+<div class="row{% if field.errors %} error" title="{% for error in field.errors %}{{ error }} {% endfor %}{% endif %}">
+    {{ field.label }}
+    {% if field.flags.required %}
+    <span class="required" title="Required">*</span>
+    {% endif %}
+    {% if wrapped %}
+        <div>{{ field() }}</div>
+    {% else %}
+        {{ field() }}
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro render_pagination(pagination, endpoint) %}
+<div class=pagination>
+{%- for page in pagination.iter_pages() %}
+    {% if page %}
+        <div>
+        {% if page != pagination.page %}
+            <a href="{{ url_for(endpoint, page=page) }}">{{ page }}</a>
+        {% else %}
+            <strong>{{ page }}</strong>
+        {% endif %}
+        </div>
+    {% else %}
+        <span class=ellipsis>…</span>
+    {% endif %}
+{%- endfor %}
+</div>
+{% endmacro %}

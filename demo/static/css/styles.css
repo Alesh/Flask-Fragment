@@ -1,0 +1,288 @@
+* { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }
+body {font: 15px Helmet, Freesans, sans-serif;}
+
+html {height: 100%;}
+body {width: 100%; height: 100%;}
+
+a {
+    color: #19374F;
+}
+
+
+form .row {
+    clear: both;
+    padding: 4px 0;
+}
+
+form textarea,
+form input[type=text],
+form input[type=password] {
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+          transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+form textarea:focus,
+form input[type=text]:focus,
+form input[type=password]:focus
+{
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.error textarea,
+.error input[type=text],
+.error input[type=password]
+{
+  border-color: #E86679;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(232, 102, 121, 0.6);
+}
+
+.required {
+    color: #EA003A;
+}
+
+.top {
+    width: 980px;
+    margin: auto !important;
+}
+
+.logo {
+    font-size: 5em;
+}
+
+.top .logo {
+    float: left;
+}
+
+.top .logo a {
+    color: #19374F;
+    text-decoration: none;
+}
+
+
+.top .user {
+    float: right;
+    width: 230px;
+    padding: 10px 0;
+}
+
+.top .user .row label {
+    clear: left;
+    float: left;
+    display: block;
+}
+
+.top .user .row input {
+    clear: right;
+    float: right;
+}
+
+.top .user .row input[type=text],
+.top .user .row input[type=password] {
+    width: 150px;
+}
+
+.menu {
+    clear: both;
+    background: #19374F;
+}
+
+.menu ul {
+    display: block;
+    width: 980px;
+    margin: auto !important;
+}
+
+.menu li {
+    display: inline-block;
+    padding: 4px 10px 4px 0;
+}
+
+.menu li a {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.content {
+    font-size: 1.2em;
+    width: 980px;
+    margin: auto !important;
+    padding: 20px 0;
+}
+
+.content h2 {
+    font-size: 2em;
+    padding-top: 10px;
+}
+
+.content .pagination {
+    float: right;
+    padding: 10px 0;
+}
+
+.content .pagination div,
+.content .pagination .ellipsis {
+    width: 26px;
+    padding: 0;
+    text-align: center;
+    background: #DDDDDD;
+    display: inline-block;
+}
+
+.content .pagination strong {
+    color: #FFFFFF;
+    display: inline-block;
+    width: 100%;
+    background: #19374F;
+}
+
+.content table {
+    clear: both;
+    width: 100%;
+    border-bottom: 2px dashed #19374F;
+    
+}
+
+.content table th {
+    background: #DDDDDD;
+    text-align: left;
+}
+
+.content table th.author {
+    width: 17%;
+}
+
+.content table th.comment-cnt {
+    width: 10%;
+}
+
+.content table th.created-at {
+    width: 18%;
+}
+
+.flashes {
+    height: 1em;
+    width: 980px;
+    margin: auto !important;
+}
+
+article {
+    padding-bottom: 20px;
+}
+
+.comments {
+    padding-top: 20px;
+    border-top: 2px dashed #19374F;
+}
+
+.comments dt {
+    font-size: 0.8em;
+    font-weight: bold;
+    background: #F2F2F2;
+}
+
+.comments dd {
+    background: #F2F2F2;
+    margin-bottom: 20px;
+}
+
+.comments dd textarea {
+    width: 100%;
+    height: 10em;
+}
+
+
+.post-show input[type=submit] {
+    font-size: 0.8em;
+}
+
+.post-show .row label {
+    clear: left;
+    float: left;
+    display: block;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.post-show .row input[type=text],
+.post-show .row textarea {
+    width: 90%;
+    clear: right;
+    float: right;
+}
+
+.post-show .row textarea {
+    height: 20em;
+}
+
+.register {
+    width: 500px;
+}
+
+.register input[type=submit] {
+    font-size: 0.8em;
+}
+
+.register .row label {
+    clear: left;
+    float: left;
+    display: block;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.register .row input[type=text],
+.register .row input[type=password]
+{
+    width: 80%;
+    clear: right;
+    float: right;
+}
+
+.flash {
+    clear: both;
+    background: #F2F2F2;
+}
+
+.flash ul {
+    display: block;
+    width: 980px;
+    margin: auto !important;
+}
+
+.flash li.error {
+    color: #EA003A;
+}
+
+.flash li.warning {
+    color: #E88700;
+}
+
+.flash li.info {
+    color: #001BE8;
+}
+
+.ui-tooltip {
+    padding: 8px;
+    position: absolute;
+    background: #F2F2F2;
+    z-index: 9999;
+    max-width: 300px;
+    -webkit-box-shadow: 0 0 5px #aaa;
+    box-shadow: 0 0 5px #aaa;
+    border-radius: 4px;
+}
+body .ui-tooltip {
+    border-width: 2px;
+}

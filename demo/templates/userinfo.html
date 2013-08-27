@@ -1,0 +1,9 @@
+<nav class="user-info">
+    <ul>
+        <li>Hello,&nbsp;<strong>{{ current_user.username }}</strong></li>
+        <li>Posts/Comments:&nbsp;
+            <strong>{{ current_user.posts_count }}/{{ current_user.comments_count }}</strong>
+        </li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>

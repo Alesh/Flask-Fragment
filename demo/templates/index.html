@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--[if IE 9 ]>    <html class="ie ie9 ie-lt10 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head data-template-set="html5-reset">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>SSI Blog</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='3rd/html5reset.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <script src="http://yandex.st/modernizr/2.6.2/modernizr.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="top">
+            <h1 class="logo"><a href="{{ url_for('index') }}">SSI Blog</a></h1>
+            <section class="user">
+            {% if current_user.is_authenticated() %}
+                {{ fragment('user_info', current_user.id) }}
+            {% else %}
+                {{ fragment('login_form') }}
+            {% endif %}
+            </section>
+        </div>
+        <nav class="menu">
+            <ul>
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('post_add') }}">Add post</a></li>
+            </ul>
+        </nav>
+        <div class=flash>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul>
+            {% for category, message in messages %}
+              <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}            
+        </div>
+    </header>
+<div class="content">
+{% block content %}
+    {{ fragment('post_list', page) }}
+{% endblock %}
+</div>
+<script src="http://yandex.st/jquery/1.10.2/jquery.min.js"></script>
+<script src="http://yandex.st/jquery-ui/1.10.3/jquery-ui.min.js"></script>
+<script>
+$(function() {
+    $(document).tooltip();
+});
+</script>
+</body>
+</html>

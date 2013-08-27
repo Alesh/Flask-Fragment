@@ -1,0 +1,22 @@
+{% from 'macros.html' import render_pagination %}
+<section class="post-list">
+    <h2>List of posts</h2>
+    {{ render_pagination(pagination, 'posts') }}
+    <table>
+        <tr>
+            <th>Title</th>
+            <th class="author">Author</th>
+            <th class="comment-cnt">Comments</th>
+            <th class="created-at">Created At</th>
+        </tr>
+        {% for post in posts %}
+        <tr>
+            <td><a href="{{ url_for('post_with_comments', id=post.id) }}">{{ post.title }}</a></td>
+            <td>{{ post.author.username }}</td>
+            <td>{{ post.comments_count }}</td>
+            <td>{{ post.created_at }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {{ render_pagination(pagination, 'posts') }}
+</section>
