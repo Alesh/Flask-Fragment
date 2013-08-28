@@ -28,10 +28,31 @@ class Fragment(object):
         self.app = app
         if app is not None:
             self.init_app(app)
-        # injects `fragment` decorator
-        Flask.fragment = self._fragment_decorator
-        Blueprint.fragment = self._fragment_decorator
 
+
+    def __call__(self, mod, cache=None, resethandler=None):
+        """Decorator to define function as fragment cached view
+        
+        Args:
+            mod: Flask app or blueprint
+            cache: The cache timeout value or None if not need to cache.
+        """
+        def decorator(fragment_view):
+            endpoint = fragment_view.__name__
+            fragment_view.cache_timeout = cache
+            fragment_view.cache_endpoint = endpoint
+            fragment_view.cache_resethandler = resethandler
+            if isinstance(mod, Blueprint):
+                rule = '/_inc/{0}.{1}'.format(mod.name, endpoint)
+            else:
+                rule = '/_inc/{0}'.format(endpoint)
+            fragment_view.args_names = list(inspect.getargspec(fragment_view).args)
+            for arg_name in fragment_view.args_names:
+                rule += '/<{0}>'.format(arg_name)
+            mod.add_url_rule(rule, endpoint, fragment_view)
+            return fragment_view
+        return decorator
+    
 
     def init_app(self, app):
         self.app = app
@@ -60,51 +81,50 @@ class Fragment(object):
             return ctx._fragment_lock_timeout
         return None
     
+    
+    def resethandler(self, fragment_view):
+        """Decorator sets reset fragment cache handler for `fragment_view` function."""
+        def decorator(handler):
+            fragment_view.cache_resethandler = handler
+            return handler
+        return decorator        
 
-    def reset(self, endpoint, *args, **kwargs):
-        """Resets fragment cache
-        
-        Accepts `*args`, `**kwargs` that must match by the number and by the
-        order of parameters from function that defined with 'endpoint'.
+
+    def reset(self, target, *args, **kwargs):
+        """Resets cache for fragment cached view
         
         Args:
-            endpoint: The endpoint name.
+            target: Endpoint or the view itself.
         """
-        func = flask.current_app.view_functions.get(endpoint)
-        if func is not None:
-            for N in range(0, len(args)):
-                kwargs[func.args_names[N]] = args[N]
-            for N in range(0, len(func.args_names)):
-                if func.args_names[N] not in  kwargs:
-                    kwargs[func.args_names[N]] = '' 
-            url = flask.url_for(endpoint, **kwargs)
-            pos = url.find('//')
-            url = url[:pos] if pos>-0 else url
+        if isinstance(target, str):
+            fragment_view = flask.current_app.view_functions.get(target)
+            if fragment_view is None:
+                raise ValueError('Not found view for endpoint "{0}"'.format(target))
+        else:
+            fragment_view = target
+        if fragment_view.cache_resethandler is None:
+            # Tries default resethandler handler
+            try:
+                for N in range(0, len(args)):
+                    kwargs[fragment_view.args_names[N]] = args[N]
+                url = flask.url_for(fragment_view.cache_endpoint, **kwargs)
+            except Exception as exc:
+                raise RuntimeError('Cannot reset cache for "{0}",'
+                    ' resethandler is not set and default handler canot'
+                    ' build URL. Detail: "{1}"'.format(fragment_view, exc))
+            self.reset_url(url)
+        else:
+            fragment_view.cache_resethandler(*args, **kwargs)
+        
+    
+    def reset_url(self, url):
+        """Resets cache for URL
+        
+        Args:
+            url: URL value
+        """
+        if self.memcache:
             self._cache_reset(url)
-            return 
-        raise ValueError('Not found view for endpoint "{0}"'.format(endpoint))    
-
-
-    @staticmethod
-    def _fragment_decorator(mod, timeout=None):
-        """Decorator to define function as fragment cached view
-        
-        Args:
-            timeout: The cache timeout value.
-        """
-        def decorator(func):
-            endpoint = func.__name__
-            func.cache_timeout = timeout
-            if isinstance(mod, Blueprint):
-                rule = '/_inc/{0}.{1}'.format(mod.name, endpoint)
-            else:
-                rule = '/_inc/{0}'.format(endpoint)
-            func.args_names = list(inspect.getargspec(func).args)
-            for arg_name in func.args_names:
-                rule += '/<{0}>'.format(arg_name)
-            mod.add_url_rule(rule, endpoint, func)
-            return func
-        return decorator
 
 
     def _fragment_tmpl_func(self, endpoint, *args, **kwargs):
@@ -132,7 +152,6 @@ class Fragment(object):
             return jinja2.Markup('<!--# include virtual="{0}" -->'.format(url))
         else:
             return jinja2.Markup(deferred_view())
-
 
     def _cache_valid(self, url):
         return bool(self.memcache.get(self.fresh_prefix+url) or False)

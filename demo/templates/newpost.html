@@ -4,7 +4,7 @@
 {% block content %}
 <section class="post-show">
     <h2>Add new post here</h2>
-    <form action="{{ url_for('post_add') }}" method="POST">
+    <form action="{{ url_for('new_post') }}" method="POST">
         {{ form.hidden_tag() }}
         {{ render_field(form.title) }}
         {{ render_field(form.body) }}

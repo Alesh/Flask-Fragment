@@ -13,7 +13,7 @@
 {% endmacro %}
 
 {% macro render_pagination(pagination, endpoint) %}
-<div class=pagination>
+<div class="pagination">
 {%- for page in pagination.iter_pages() %}
     {% if page %}
         <div>
@@ -28,4 +28,5 @@
     {% endif %}
 {%- endfor %}
 </div>
+<br class="clearfix"/>
 {% endmacro %}

@@ -186,6 +186,10 @@ article {
     border-top: 2px dashed #19374F;
 }
 
+.comments dl {
+    margin-top: 18px;
+}
+
 .comments dt {
     font-size: 0.8em;
     font-weight: bold;

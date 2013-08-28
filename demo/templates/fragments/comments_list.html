@@ -1,0 +1,30 @@
+{% macro render_pagination(pagination, endpoint, post_id) %}
+<div class="pagination">
+{%- for page in pagination.iter_pages() %}
+    {% if page %}
+        <div>
+        {% if page != pagination.page %}
+            <a href="{{ url_for(endpoint, post_id=post_id, page=page) }}">{{ page }}</a>
+        {% else %}
+            <strong>{{ page }}</strong>
+        {% endif %}
+        </div>
+    {% else %}
+        <span class=ellipsis>…</span>
+    {% endif %}
+{%- endfor %}
+</div>
+<br class="clearfix"/>
+{% endmacro %}
+
+
+{{ render_pagination(pagination, 'post', post_id) }}
+<dl>
+{% for comment in comments %}
+    <dt>{{ comment.author.username }} ({{ comment.created_at }})</dt>
+    <dd>
+        <pre>{{ comment.body }}</pre>
+    </dd>
+{% endfor %}
+</dl>
+{{ render_pagination(pagination, 'post', post_id) }}

@@ -2,24 +2,14 @@
 
 {% block content %}
 <section class="post-show">
-    <article>
-        <h2>{{ post.title }}</h2>
-        <p>
-            <pre>{{ post.body }}</pre>
-        </p>
-    </article>
+    {{ fragment('post_show', post_id) }}
     <section class="comments">
+        {{ fragment('comments_list', post_id, page) }}
         <dl>
-        {% for comment in post.comments %}
-            <dt>{{ comment.author.username }} ({{ comment.created_at }})</dt>
-            <dd>
-                <pre>{{ comment.body }}</pre>
-            </dd>
-        {% endfor %}
         {% if current_user.is_authenticated() %}
             <dt>Add new comment here</dt>
             <dd>
-                <form action="{{ url_for('post_with_comments', id=post.id) }}" method="POST">
+                <form action="{{ url_for('post', post_id=post_id, page=page) }}" method="POST">
                     {{ form.hidden_tag() }}
                     <div class="post-body">{{ form.body() }}</div>
                     <input type="submit" value="Save">
@@ -28,7 +18,7 @@
         {% else %}
             <dt>You must login if you want to leave a comment.</dt>
         {% endif %}
-        </dl>
+        <dl>
     </section>
 </section>
 {% endblock %}

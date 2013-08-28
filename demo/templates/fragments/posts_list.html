@@ -11,7 +11,7 @@
         </tr>
         {% for post in posts %}
         <tr>
-            <td><a href="{{ url_for('post_with_comments', id=post.id) }}">{{ post.title }}</a></td>
+            <td><a href="{{ url_for('post', post_id=post.id, page=1) }}">{{ post.title }}</a></td>
             <td>{{ post.author.username }}</td>
             <td>{{ post.comments_count }}</td>
             <td>{{ post.created_at }}</td>

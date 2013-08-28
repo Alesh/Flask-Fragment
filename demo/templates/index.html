@@ -25,7 +25,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="{{ url_for('index') }}">Home</a></li>
-                <li><a href="{{ url_for('post_add') }}">Add post</a></li>
+                <li><a href="{{ url_for('new_post') }}">Add post</a></li>
             </ul>
         </nav>
         <div class=flash>
@@ -42,7 +42,7 @@
     </header>
 <div class="content">
 {% block content %}
-    {{ fragment('post_list', page) }}
+    {{ fragment('posts_list', page) }}
 {% endblock %}
 </div>
 <script src="http://yandex.st/jquery/1.10.2/jquery.min.js"></script>
