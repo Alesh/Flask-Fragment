@@ -119,11 +119,10 @@ def comments_list(post_id, page):
                                                            pagination=pagination, comments=comments)
 
 
-@fragment.resethandler(post_show)
-def reset_post_show(post_id):
-    fragment.reset(posts_list)
+@fragment.resethandler(comments_list)
+def reset_comments_list(post_id):
     page_size = COMMENTS_ON_PAGE
-    pagination = Comment.query.filter_by(post_id=post_id).paginate(page, page_size)
+    pagination = Comment.query.filter_by(post_id=post_id).paginate(1, page_size)
     for N in range(pagination.pages):
         fragment.reset_url(url_for('comments_list', post_id=post_id, page=N+1))
 
@@ -136,7 +135,8 @@ def post(post_id, page):
         form.comment.post_id = post_id
         db.session.add(form.comment)
         db.session.commit()
-        fragment.reset(post_show, post_id)
+        fragment.reset(posts_list)
+        fragment.reset(comments_list, post_id)
         fragment.reset(user_info, current_user.id)
         flash('Your comment has saved successfully.', 'info')
     return render_template('post.html', form=form, post_id=post_id, page=page)
